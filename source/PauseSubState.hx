@@ -97,9 +97,6 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		if (PlayState.instance.useVideo)
-			menuItems.remove('Resume');
-
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 		var upP = controls.UP_P;
@@ -201,12 +198,6 @@ class PauseSubState extends MusicBeatSubstate
 				case "Restart Song":
 					FlxG.resetState();
 				case "Exit to menu":
-					if (PlayState.instance.useVideo)
-					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
 					if(PlayState.loadRep)
 					{
 						FlxG.save.data.botplay = false;
