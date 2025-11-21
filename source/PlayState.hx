@@ -7,9 +7,6 @@ import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
 import Replay.Ana;
 import Replay.Analysis;
-#if cpp
-import webm.WebmPlayer;
-#end
 import flixel.input.keyboard.FlxKey;
 import haxe.Exception;
 import openfl.geom.Matrix;
@@ -66,13 +63,15 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
-#if windows
+#if desktop
 import Sys;
 import sys.FileSystem;
 #end
+
+import hxcodec.VideoHandler;
 
 using StringTools;
 
@@ -117,7 +116,7 @@ class PlayState extends MusicBeatState
 	var songLength:Float = 0;
 	var kadeEngineWatermark:FlxText;
 	
-	#if windows
+	#if desktop
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
@@ -1516,8 +1515,8 @@ class PlayState extends MusicBeatState
 
 	function playCutscene(videoPlaying:String,time:Float,dialogueBox:DialogueBox):Void
 	{
-		var video:MP4Handler = new MP4Handler();
-   		video.playMP4(Paths.video(videoPlaying), null); 
+		var video:VideoHandler = new VideoHandler();
+   		video.playVideo(Paths.video(videoPlaying), null); 
 		new FlxTimer().start(time, function(tmr:FlxTimer)
 		{
 			if (dialogueBox != null)
@@ -1532,8 +1531,8 @@ class PlayState extends MusicBeatState
 
 	function playCutscene2(videoPlaying:String,time:Float):Void
 	{
-		var video:MP4Handler = new MP4Handler();
-		video.playMP4(Paths.video(videoPlaying), null); 
+		var video:VideoHandler = new VideoHandler();
+		video.playVideo(Paths.video(videoPlaying), null); 
 		new FlxTimer().start(time, function(tmr:FlxTimer)
 		{
 			LoadingState.loadAndSwitchState(new PlayState());
@@ -1556,7 +1555,7 @@ class PlayState extends MusicBeatState
 
 	var luaWiggles:Array<WiggleEffect> = [];
 
-	#if windows
+	#if desktop
 	public static var luaModchart:ModchartState = null;
 	#end
 
@@ -1568,7 +1567,7 @@ class PlayState extends MusicBeatState
 		generateStaticArrows(1);
 
 
-		#if windows
+		#if desktop
 		// pre lowercasing the song name (startCountdown)
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
 		switch (songLowercase) {
@@ -1831,7 +1830,7 @@ class PlayState extends MusicBeatState
 		if (useVideo)
 			GlobalVideo.get().resume();
 		
-		#if windows
+		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText
 			+ " "
@@ -1889,7 +1888,7 @@ class PlayState extends MusicBeatState
 		var playerCounter:Int = 0;
 
 		// Per song offset check
-		#if windows
+		#if desktop
 			// pre lowercasing the song name (generateSong)
 			var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
 				switch (songLowercase) {
@@ -2175,7 +2174,7 @@ class PlayState extends MusicBeatState
 				vocals.pause();
 			}
 
-			#if windows
+			#if desktop
 			DiscordClient.changePresence("PAUSED on "
 				+ SONG.song
 				+ " ("
@@ -2248,7 +2247,7 @@ class PlayState extends MusicBeatState
 		vocals.time = Conductor.songPosition;
 		vocals.play();
 
-		#if windows
+		#if desktop
 		DiscordClient.changePresence(detailsText
 			+ " "
 			+ SONG.song
@@ -2302,7 +2301,7 @@ class PlayState extends MusicBeatState
 
 
 		
-		#if windows
+		#if desktop
 		if (executeModchart && luaModchart != null && songStarted)
 		{
 			luaModchart.setVar('songPos', Conductor.songPosition);
