@@ -1516,7 +1516,7 @@ class PlayState extends MusicBeatState
 	function playCutscene(videoPlaying:String,time:Float,dialogueBox:DialogueBox):Void
 	{
 		var video:VideoHandler = new VideoHandler();
-   		video.playVideo(Paths.video(videoPlaying), null); 
+   		video.playVideo(Paths.video(videoPlaying)); 
 		new FlxTimer().start(time, function(tmr:FlxTimer)
 		{
 			if (dialogueBox != null)
@@ -1532,7 +1532,7 @@ class PlayState extends MusicBeatState
 	function playCutscene2(videoPlaying:String,time:Float):Void
 	{
 		var video:VideoHandler = new VideoHandler();
-		video.playVideo(Paths.video(videoPlaying), null); 
+		video.playVideo(Paths.video(videoPlaying)); 
 		new FlxTimer().start(time, function(tmr:FlxTimer)
 		{
 			LoadingState.loadAndSwitchState(new PlayState());
@@ -3991,13 +3991,8 @@ class PlayState extends MusicBeatState
 				}
 
 			public var fuckingVolume:Float = 1;
-			public var useVideo = false;
-
-			public static var webmHandler:WebmHandler;
 
 			public var playingDathing = false;
-
-			public var videoSprite:FlxSprite;
 
 			public function focusOut() {
 				if (paused)
@@ -4018,83 +4013,6 @@ class PlayState extends MusicBeatState
 			{ 
 				// nada 
 			}
-
-
-			public function backgroundVideo(source:String) // for background videos
-				{
-					#if cpp
-					useVideo = true;
-			
-					FlxG.stage.window.onFocusOut.add(focusOut);
-					FlxG.stage.window.onFocusIn.add(focusIn);
-
-					var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
-					WebmPlayer.SKIP_STEP_LIMIT = 90;
-					var str1:String = "WEBM SHIT"; 
-					webmHandler = new WebmHandler();
-					webmHandler.source(ourSource);
-					webmHandler.makePlayer();
-					webmHandler.webm.name = str1;
-			
-					GlobalVideo.setWebm(webmHandler);
-
-					GlobalVideo.get().source(source);
-					GlobalVideo.get().clearPause();
-					if (GlobalVideo.isWebm)
-					{
-						GlobalVideo.get().updatePlayer();
-					}
-					GlobalVideo.get().show();
-			
-					if (GlobalVideo.isWebm)
-					{
-						GlobalVideo.get().restart();
-					} else {
-						GlobalVideo.get().play();
-					}
-					
-					var data = webmHandler.webm.bitmapData;
-			
-					videoSprite = new FlxSprite(-470,-30).loadGraphic(data);
-			
-					videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
-			
-					remove(gf);
-					remove(boyfriend);
-					remove(dad);
-					add(videoSprite);
-					add(gf);
-					add(boyfriend);
-					add(dad);
-
-
-					add(pressSpace);
-
-
-
-					add(miss);
-					add(hit);
-							
-
-		   			add(blackthing);
-
-
-					if (dad.curCharacter == 'paps')
-					{
-						papyrusAlpha();
-					}
-
-					if (curStage == 'judgementhall' || curStage == 'judgementhall-paps' || curStage == 'judgementhall-chara')
-					add(judgementIlumination);
-			
-					trace('poggers');
-			
-					if (!songStarted)
-						webmHandler.pause();
-					else
-						webmHandler.resume();
-					#end
-				}
 
 	function noteMiss(direction:Int = 1, daNote:Note):Void
 	{
