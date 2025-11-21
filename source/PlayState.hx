@@ -1516,7 +1516,7 @@ class PlayState extends MusicBeatState
 	function playCutscene(videoPlaying:String,time:Float,dialogueBox:DialogueBox):Void
 	{
 		var video:VideoHandler = new VideoHandler();
-   		video.playVideo(Paths.video(videoPlaying)); 
+   		video.playVideo(Paths.video(videoPlaying), false, true); 
 		new FlxTimer().start(time, function(tmr:FlxTimer)
 		{
 			if (dialogueBox != null)
@@ -1532,7 +1532,7 @@ class PlayState extends MusicBeatState
 	function playCutscene2(videoPlaying:String,time:Float):Void
 	{
 		var video:VideoHandler = new VideoHandler();
-		video.playVideo(Paths.video(videoPlaying)); 
+		video.playVideo(Paths.video(videoPlaying), false, true); 
 		new FlxTimer().start(time, function(tmr:FlxTimer)
 		{
 			LoadingState.loadAndSwitchState(new PlayState());
