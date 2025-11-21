@@ -2,7 +2,7 @@ package;
 
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
-#if windows
+#if desktop
 import llua.Lua;
 #end
 import Controls.Control;
@@ -33,13 +33,6 @@ class PauseSubState extends MusicBeatSubstate
 	public function new(x:Float, y:Float)
 	{
 		super();
-
-		if (PlayState.instance.useVideo)
-		{
-			menuItems.remove("Resume");
-			if (GlobalVideo.get().playing)
-				GlobalVideo.get().pause();
-		}
 
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
@@ -208,12 +201,6 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "Restart Song":
-					if (PlayState.instance.useVideo)
-					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
 					FlxG.resetState();
 				case "Exit to menu":
 					if (PlayState.instance.useVideo)
@@ -229,13 +216,11 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.save.data.downscroll = false;
 					}
 					PlayState.loadRep = false;
-					#if windows
 					if (PlayState.luaModchart != null)
 					{
 						PlayState.luaModchart.die();
 						PlayState.luaModchart = null;
 					}
-					#end
 					if (FlxG.save.data.fpsCap > 290)
 						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 					
