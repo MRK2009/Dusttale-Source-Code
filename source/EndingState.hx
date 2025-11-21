@@ -5,10 +5,10 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
-#if windows
+#if desktop
 import Sys;
 import sys.FileSystem;
 #end
